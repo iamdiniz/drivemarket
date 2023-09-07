@@ -44,7 +44,7 @@ public class Carro {
 	@Column(nullable = false)
 	private String placa;
 	
-	@Column(nullable = false)
+	@Column(name = "numero_chassi", nullable = false)
 	private String numeroChassi;
 	
 	@Column(nullable = false)
