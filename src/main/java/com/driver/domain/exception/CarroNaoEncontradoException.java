@@ -1,6 +1,6 @@
 package com.driver.domain.exception;
 
-public class CarroNaoEncontradoException extends RuntimeException {
+public class CarroNaoEncontradoException extends EntidadeNaoEncontradaException {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -9,7 +9,7 @@ public class CarroNaoEncontradoException extends RuntimeException {
 	}
 	
 	public CarroNaoEncontradoException(Long carroId) {
-		this(String.format("Não existe um carro com código", carroId));
+		this(String.format("Não existe um carro com código %d", carroId));
 	}
 
 }
