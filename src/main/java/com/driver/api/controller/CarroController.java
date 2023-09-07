@@ -1,4 +1,4 @@
-package com.driver.domain.controller;
+package com.driver.api.controller;
 
 import java.util.List;
 
@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.driver.domain.model.Carro;
+import com.driver.api.assembler.CarroDTOAssembler;
+import com.driver.api.model.CarroDTO;
 import com.driver.domain.repository.CarroRepository;
 
 @RestController
@@ -17,9 +18,12 @@ public class CarroController {
 	@Autowired
 	private CarroRepository carroRepository;
 	
+	@Autowired
+	private CarroDTOAssembler carroDTOAssembler;
+	
 	@GetMapping
-	public List<Carro> findAll() {
-		return carroRepository.findAll();
+	public List<CarroDTO> findAll() {
+		return carroDTOAssembler.toCollectionDTO(carroRepository.findAll());
 	}
 	
 }
