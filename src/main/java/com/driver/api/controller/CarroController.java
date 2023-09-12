@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,6 +17,7 @@ import com.driver.api.assembler.CarroDTOAssembler;
 import com.driver.api.assembler.CarroInputDiassembler;
 import com.driver.api.model.CarroDTO;
 import com.driver.api.model.input.CarroInput;
+import com.driver.api.model.input.CarroUpdateInput;
 import com.driver.domain.model.Carro;
 import com.driver.domain.repository.CarroRepository;
 import com.driver.domain.service.CarroService;
@@ -50,12 +52,22 @@ public class CarroController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CarroDTO adicionar(@RequestBody CarroInput carroInput) {
+	public CarroDTO create(@RequestBody CarroInput carroInput) {
 		Carro carro = carroInputDiassembler.toDomainObject(carroInput);
 		
 		carro = carroService.salvar(carro);
 		
 		return carroDTOAssembler.toDTO(carro);
+	}
+	
+	@PutMapping("/{carroId}")
+	public CarroDTO update(@PathVariable Long carroId,
+			@RequestBody CarroUpdateInput carroUpdateInput) {
+		Carro carroAtual = carroService.buscarOuFalhar(carroId);
+		
+		carroInputDiassembler.copyToDomainObject(carroUpdateInput, carroAtual);
+		
+		return carroDTOAssembler.toDTO(carroService.salvar(carroAtual));
 	}
 	
 }
