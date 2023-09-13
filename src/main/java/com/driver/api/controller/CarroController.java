@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +56,7 @@ public class CarroController {
 	public CarroDTO create(@RequestBody CarroInput carroInput) {
 		Carro carro = carroInputDiassembler.toDomainObject(carroInput);
 		
-		carro = carroService.salvar(carro);
+		carro = carroService.save(carro);
 		
 		return carroDTOAssembler.toDTO(carro);
 	}
@@ -67,7 +68,13 @@ public class CarroController {
 		
 		carroInputDiassembler.copyToDomainObject(carroUpdateInput, carroAtual);
 		
-		return carroDTOAssembler.toDTO(carroService.salvar(carroAtual));
+		return carroDTOAssembler.toDTO(carroService.save(carroAtual));
+	}
+	
+	@DeleteMapping("/{carroId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable Long carroId) {
+		carroService.delete(carroId);
 	}
 	
 }

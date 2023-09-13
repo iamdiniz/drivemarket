@@ -1,5 +1,7 @@
 package com.driver.api.model.input;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +11,7 @@ public class CarroInput {
 	
 	private String modelo;
 	private Integer ano;
-	private Double preco;
+	private BigDecimal preco;
 	private Double potencia;
 	private String cor;
 	private String carroceria;

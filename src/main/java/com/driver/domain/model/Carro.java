@@ -1,5 +1,7 @@
 package com.driver.domain.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +28,7 @@ public class Carro {
 	private Integer ano;
 	
 	@Column(nullable = false)
-	private Double preco;
+	private BigDecimal preco;
 	
 	@Column(nullable = false)
 	private Double potencia;
