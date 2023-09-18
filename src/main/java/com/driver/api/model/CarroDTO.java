@@ -18,6 +18,6 @@ public class CarroDTO {
 	private String carroceria;
 	private String combustivel;
 	private String cambio;
-	private FabricanteDTO fabricante;
+	private FabricanteReferenceDTO fabricante;
 	
 }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.driver.api.assembler.FabricanteDTOAssembler;
+import com.driver.api.model.FabricanteDTO;
 import com.driver.domain.model.Fabricante;
 import com.driver.domain.repository.FabricanteRepository;
 import com.driver.domain.service.FabricanteService;
@@ -27,14 +29,19 @@ public class FabricanteController {
 	@Autowired
 	private FabricanteService fabricanteService;
 	
+	@Autowired
+	private FabricanteDTOAssembler fabricanteDTOAssembler;
+	
 	@GetMapping
-	public List<Fabricante> findAll() {
-		return fabricanteRepository.findAll();
+	public List<FabricanteDTO> findAll() {
+		return fabricanteDTOAssembler.toCollectionDTO(fabricanteRepository.findAll());
 	}
 	
 	@GetMapping("/{fabricanteId}")
-	public Fabricante findById(@PathVariable Long fabricanteId) {
-		return fabricanteService.buscarOuFalhar(fabricanteId);
+	public FabricanteDTO findById(@PathVariable Long fabricanteId) {
+		Fabricante fabricante = fabricanteService.buscarOuFalhar(fabricanteId);
+		
+		return fabricanteDTOAssembler.toDTO(fabricante);
 	}
 	
 	@PostMapping
