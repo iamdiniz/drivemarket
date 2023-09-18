@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.driver.domain.exception.EntidadeEmUsoException;
 import com.driver.domain.exception.EntidadeNaoEncontradaException;
+import com.driver.domain.exception.NegocioException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -19,6 +21,31 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		ErrorType errorType = ErrorType.NOT_FOUND;
+		String detail = ex.getMessage();
+		
+		StandardError error = createProblemBuilder(status, errorType, detail).build();
+		
+		return handleExceptionInternal(ex, error, null, status, request);
+	}
+	
+	@ExceptionHandler(EntidadeEmUsoException.class)
+	public ResponseEntity<?> handleEntidadeEmUso(EntidadeEmUsoException ex,
+			WebRequest request) {
+		
+		HttpStatus status = HttpStatus.CONFLICT;
+		ErrorType errorType = ErrorType.ENTITY_IN_USE;
+		String detail = ex.getMessage();
+		
+		StandardError error = createProblemBuilder(status, errorType, detail).build();
+		
+		return handleExceptionInternal(ex, error, null, status, request);
+	}
+	
+	@ExceptionHandler(NegocioException.class)
+	public ResponseEntity<?> handleNegocioException(NegocioException ex, WebRequest request) {
+		
+		HttpStatus status = HttpStatus.CONFLICT;
+		ErrorType errorType = ErrorType.BUSINESS_ERROR;
 		String detail = ex.getMessage();
 		
 		StandardError error = createProblemBuilder(status, errorType, detail).build();
