@@ -15,6 +15,9 @@ import jakarta.transaction.Transactional;
 @Service
 public class FabricanteService {
 	
+	private static final String MSG_FABRICANTE_EM_USO
+	= "Fabricante de código %d não pode ser removido, pois está em uso";
+	
 	@Autowired
 	private FabricanteRepository fabricanteRepository;
 	
@@ -26,7 +29,7 @@ public class FabricanteService {
 	@Transactional
 	public void delete(Long fabricanteId) {
 		try {
-			Fabricante fabricante = buscarOuFalhar(fabricanteId);
+			buscarOuFalhar(fabricanteId);
 			fabricanteRepository.deleteById(fabricanteId);
 			fabricanteRepository.flush();
 			
@@ -35,8 +38,7 @@ public class FabricanteService {
 			
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format("Fabricante de código %d não pode ser removido, pois"
-							+ " está em uso", fabricanteId));
+					String.format(MSG_FABRICANTE_EM_USO, fabricanteId));
 		}
 	}
 	

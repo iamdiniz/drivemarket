@@ -56,7 +56,6 @@ public class CarroController {
 	public CarroDTO create(@RequestBody CarroInput carroInput) {
 		Carro carro = carroInputDiassembler.toDomainObject(carroInput);
 		
-		// carro = carroService.save(carro); isso é a mesma coisa disso abaixo.
 		return carroDTOAssembler.toDTO(carro = carroService.save(carro));
 	}
 	

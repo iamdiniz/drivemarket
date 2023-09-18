@@ -34,8 +34,9 @@ public class CarroService {
 	@Transactional
 	public void delete(Long carroId) {
 		try {
-			Carro carro = buscarOuFalhar(carroId);
+			buscarOuFalhar(carroId);
 			carroRepository.deleteById(carroId);
+			carroRepository.flush();
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(

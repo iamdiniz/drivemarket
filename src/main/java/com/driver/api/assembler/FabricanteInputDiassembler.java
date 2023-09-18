@@ -18,7 +18,7 @@ public class FabricanteInputDiassembler {
 	}
 	
 	public void copyToDomainObject(FabricanteInput fabricanteInput, Fabricante fabricante) {
-		modelMapper.map(fabricanteInput, fabricanteInput);
+		modelMapper.map(fabricanteInput, fabricante);
 	}
 	
 }
