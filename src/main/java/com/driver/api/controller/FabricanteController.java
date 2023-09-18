@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.driver.api.assembler.FabricanteDTOAssembler;
+import com.driver.api.assembler.FabricanteInputDiassembler;
 import com.driver.api.model.FabricanteDTO;
+import com.driver.api.model.input.FabricanteInput;
 import com.driver.domain.model.Fabricante;
 import com.driver.domain.repository.FabricanteRepository;
 import com.driver.domain.service.FabricanteService;
@@ -32,6 +34,9 @@ public class FabricanteController {
 	@Autowired
 	private FabricanteDTOAssembler fabricanteDTOAssembler;
 	
+	@Autowired
+	private FabricanteInputDiassembler fabricanteInputDiassembler;
+	
 	@GetMapping
 	public List<FabricanteDTO> findAll() {
 		return fabricanteDTOAssembler.toCollectionDTO(fabricanteRepository.findAll());
@@ -46,8 +51,10 @@ public class FabricanteController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Fabricante create(@RequestBody Fabricante fabricante) {
-		return fabricanteService.save(fabricante);
+	public FabricanteDTO create(@RequestBody FabricanteInput fabricanteInput) {
+		Fabricante fabricante = fabricanteInputDiassembler.toDomainObject(fabricanteInput);
+		
+		return fabricanteDTOAssembler.toDTO(fabricante = fabricanteService.save(fabricante));
 	}
 	
 	@DeleteMapping("/{fabricanteId}")
