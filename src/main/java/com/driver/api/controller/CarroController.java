@@ -63,7 +63,7 @@ public class CarroController {
 	
 	@PutMapping("/{carroId}")
 	public CarroDTO update(@PathVariable Long carroId,
-			@RequestBody CarroUpdateInput carroUpdateInput) {
+			@RequestBody @Valid CarroUpdateInput carroUpdateInput) {
 		Carro carroAtual = carroService.buscarOuFalhar(carroId);
 		
 		carroInputDiassembler.copyToDomainObject(carroUpdateInput, carroAtual);

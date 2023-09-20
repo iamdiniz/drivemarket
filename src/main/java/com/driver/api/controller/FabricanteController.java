@@ -62,7 +62,7 @@ public class FabricanteController {
 	
 	@PutMapping("/{fabricanteId}")
 	public FabricanteDTO update(@PathVariable Long fabricanteId,
-			@RequestBody FabricanteInput fabricanteInput) {
+			@RequestBody @Valid FabricanteInput fabricanteInput) {
 		Fabricante fabricanteAtual = fabricanteService.buscarOuFalhar(fabricanteId);
 		
 		fabricanteInputDiassembler.copyToDomainObject(fabricanteInput, fabricanteAtual);
