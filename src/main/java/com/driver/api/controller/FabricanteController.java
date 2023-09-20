@@ -22,6 +22,8 @@ import com.driver.domain.model.Fabricante;
 import com.driver.domain.repository.FabricanteRepository;
 import com.driver.domain.service.FabricanteService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/fabricantes")
 public class FabricanteController {
@@ -52,7 +54,7 @@ public class FabricanteController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public FabricanteDTO create(@RequestBody FabricanteInput fabricanteInput) {
+	public FabricanteDTO create(@RequestBody @Valid FabricanteInput fabricanteInput) {
 		Fabricante fabricante = fabricanteInputDiassembler.toDomainObject(fabricanteInput);
 		
 		return fabricanteDTOAssembler.toDTO(fabricante = fabricanteService.save(fabricante));
