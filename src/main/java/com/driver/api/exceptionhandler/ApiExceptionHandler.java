@@ -1,8 +1,10 @@
 package com.driver.api.exceptionhandler;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -14,6 +16,10 @@ import com.driver.domain.exception.NegocioException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+	
+	public static final String MSG_ERRO_GENERICA_USUARIO_FINAL
+	= "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o problema"
+			+ " persistir, entre em contato com o administrador do sistema";
 
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
 	public ResponseEntity<?> handleEntidadeNaoEncontrada(
@@ -51,6 +57,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		StandardError error = createProblemBuilder(status, errorType, detail).build();
 		
 		return handleExceptionInternal(ex, error, null, status, request);
+	}
+	
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+		
+		ErrorType errorType = ErrorType.INVALID_DATA;
+		String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente";
+		
+		StandardError error = createProblemBuilder((HttpStatus) status, errorType, detail).build();
+		
+		return handleExceptionInternal(ex, error, headers, status, request);
 	}
 	
 	@Override

@@ -23,6 +23,8 @@ import com.driver.domain.model.Carro;
 import com.driver.domain.repository.CarroRepository;
 import com.driver.domain.service.CarroService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/carros")
 public class CarroController {
@@ -53,7 +55,7 @@ public class CarroController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CarroDTO create(@RequestBody CarroInput carroInput) {
+	public CarroDTO create(@RequestBody @Valid CarroInput carroInput) {
 		Carro carro = carroInputDiassembler.toDomainObject(carroInput);
 		
 		return carroDTOAssembler.toDTO(carro = carroService.save(carro));

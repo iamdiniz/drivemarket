@@ -21,6 +21,7 @@ public class CarroService {
 	@Autowired
 	private FabricanteService fabricanteService;
 	
+	@Transactional
 	public Carro save(Carro carro) {
 		Long fabricanteId = carro.getFabricante().getId();
 		
