@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.driver.api.assembler.CarroDTOAssembler;
 import com.driver.api.assembler.CarroInputDiassembler;
+import com.driver.api.model.CarroByIdDTO;
 import com.driver.api.model.CarroDTO;
 import com.driver.api.model.input.CarroInput;
 import com.driver.api.model.input.CarroUpdateInput;
@@ -47,10 +48,10 @@ public class CarroController {
 	}
 	
 	@GetMapping("/{carroId}")
-	public CarroDTO findById(@PathVariable Long carroId) {
+	public CarroByIdDTO findById(@PathVariable Long carroId) {
 		Carro carro = carroService.buscarOuFalhar(carroId);
 		
-		return carroDTOAssembler.toDTO(carro);
+		return carroDTOAssembler.toByIdDTO(carro);
 	}
 	
 	@PostMapping

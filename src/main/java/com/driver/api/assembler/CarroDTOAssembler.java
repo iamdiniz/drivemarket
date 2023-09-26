@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.driver.api.model.CarroByIdDTO;
 import com.driver.api.model.CarroDTO;
 import com.driver.domain.model.Carro;
 
@@ -18,6 +19,10 @@ public class CarroDTOAssembler {
 	
 	public CarroDTO toDTO(Carro carro) {
 		return modelMapper.map(carro, CarroDTO.class);
+	}
+	
+	public CarroByIdDTO toByIdDTO(Carro carro) {
+		return modelMapper.map(carro, CarroByIdDTO.class);
 	}
 	
 	public List<CarroDTO> toCollectionDTO(List<Carro> carros) {

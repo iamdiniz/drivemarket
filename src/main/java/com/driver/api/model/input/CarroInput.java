@@ -12,7 +12,6 @@ public class CarroInput {
 	
 	@NotBlank
 	private String modelo;
-	
 	private Integer ano;
 	private BigDecimal preco;
 	private Double potencia;
