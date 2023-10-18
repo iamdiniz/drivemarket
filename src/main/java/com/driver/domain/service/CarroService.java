@@ -1,11 +1,13 @@
 package com.driver.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.driver.domain.exception.CarroNaoEncontradoException;
 import com.driver.domain.exception.EntidadeNaoEncontradaException;
+import com.driver.domain.exception.NegocioException;
 import com.driver.domain.model.Carro;
 import com.driver.domain.model.Fabricante;
 import com.driver.domain.repository.CarroRepository;
@@ -23,13 +25,18 @@ public class CarroService {
 	
 	@Transactional
 	public Carro save(Carro carro) {
-		Long fabricanteId = carro.getFabricante().getId();
-		
-		Fabricante fabricante = fabricanteService.buscarOuFalhar(fabricanteId);
-		
-		carro.setFabricante(fabricante);
-		
-		return carroRepository.save(carro);
+		try {
+			Long fabricanteId = carro.getFabricante().getId();
+			
+			Fabricante fabricante = fabricanteService.buscarOuFalhar(fabricanteId);
+			
+			carro.setFabricante(fabricante);
+			
+			return carroRepository.save(carro);
+		} catch (DataIntegrityViolationException e) {
+			throw new NegocioException (
+					String.format("Já existe um carro com a placa %s", carro.getPlaca()));
+		}
 	}
 	
 	@Transactional

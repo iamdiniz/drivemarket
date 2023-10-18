@@ -50,7 +50,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(NegocioException.class)
 	public ResponseEntity<?> handleNegocioException(NegocioException ex, WebRequest request) {
 		
-		HttpStatus status = HttpStatus.CONFLICT;
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		ErrorType errorType = ErrorType.BUSINESS_ERROR;
 		String detail = ex.getMessage();
 		
