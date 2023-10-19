@@ -1,7 +1,8 @@
 package com.driver.domain.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -25,18 +26,15 @@ public class CarroService {
 	
 	@Transactional
 	public Carro save(Carro carro) {
-		try {
 			Long fabricanteId = carro.getFabricante().getId();
 			
 			Fabricante fabricante = fabricanteService.buscarOuFalhar(fabricanteId);
 			
+			verificarExistencia(carro);
+			
 			carro.setFabricante(fabricante);
 			
 			return carroRepository.save(carro);
-		} catch (DataIntegrityViolationException e) {
-			throw new NegocioException (
-					String.format("Já existe um carro com a placa %s", carro.getPlaca()));
-		}
 	}
 	
 	@Transactional
@@ -56,6 +54,23 @@ public class CarroService {
 	public Carro buscarOuFalhar(Long carroId) {
 			return carroRepository.findById(carroId)
 							.orElseThrow(() -> new CarroNaoEncontradoException(carroId));
+	}
+	
+	public void verificarExistencia(Carro carro) {
+		Optional<Carro> carroChassi = carroRepository.findByNumeroChassi(carro.getNumeroChassi());
+		Optional<Carro> carroPlaca = carroRepository.findByPlaca(carro.getPlaca());
+		
+		if (carroChassi.isPresent() == true) {
+			throw new NegocioException(
+					String.format("Já existe um carro com a chassi %s",
+							carroChassi.get().getNumeroChassi()));
+		}
+		
+		if (carroPlaca.isPresent() == true) {
+			throw new NegocioException(
+					String.format("Já existe um carro com a placa %s",
+							carro.getPlaca()));
+		}
 	}
 	
 }
