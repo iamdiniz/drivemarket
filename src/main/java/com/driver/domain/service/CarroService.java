@@ -47,7 +47,6 @@ public class CarroService {
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
 					String.format("Não existe um cadastro de carro com código %d", carroId));
-			
 		} 
 	}
 	
